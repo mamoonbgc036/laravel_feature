@@ -2,13 +2,14 @@
 
 use App\Models\User;
 use App\Events\UserEvent;
+use App\Mail\SendInvoice;
 use App\Events\OrderEvent;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\UserController;
 use App\Listeners\UpdateVendorAboutOrder;
 use App\Http\Controllers\ProfileController;
-use App\Mail\SendInvoice;
-use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,17 +23,17 @@ use Illuminate\Support\Facades\Mail;
 */
 
 Route::get('/', function () {
-    $user = User::create([
-        'first_name' => 'shohel',
-        'last_name' => 'hossain',
-        'email' => 'noman@email'
-    ]);
-    UserEvent::dispatch($user);
+    // $user = User::create([
+    //     'first_name' => 'shohel',
+    //     'last_name' => 'hossain',
+    //     'email' => 'noman@email'
+    // ]);
+    // UserEvent::dispatch($user);
     echo "ok";
     // return view('welcome');
 });
 
-Route::get('/send-email', function(){
+Route::get('/send-email', function () {
     // $user = User::find(1);
     Mail::to('sohail1054155@gmail.com')->send(new SendInvoice(now()->format('m')));
     return 'success';
@@ -52,5 +53,7 @@ Route::get('/test', [TestController::class, 'test']);
 
 Route::get('test/{user}', [TestController::class, 'edit'])->name('test');
 
+Route::get('users', [UserController::class, 'index'])->name('users.index');
 
-require __DIR__.'/auth.php';
+
+require __DIR__ . '/auth.php';
